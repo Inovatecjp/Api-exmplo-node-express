@@ -1,0 +1,598 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Para o sistema inovatec-jp",
+        "description": "Essa API serve para registrar os movimentos da inovatec",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/v1/accounts/Users": {
+            "get": {
+                "summary": "Pega as próprias informações",
+                "tags": ["Users"],
+                "responses": {
+                    "200": {
+                        "description": "Informações do usuário retornadas com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "summary": "Cria um novo usuário",
+                "tags": ["Users"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/NewUser"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Usuário criado com sucesso"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Atualiza um usuário existente",
+                "tags": ["Users"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateUser"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Usuário atualizado com sucesso"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "summary": "Apaga um usuário",
+                "tags": ["Users"],
+                "responses": {
+                    "204": {
+                        "description": "Usuário apagado com sucesso"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/v1/accounts/Users/AllUsers": {
+            "get": {
+                "summary": "Lista todos os usuários",
+                "tags": ["Users"],
+                "responses": {
+                    "200": {
+                        "description": "Uma lista de todos os usuários",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/User"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/v1/accounts/Users/RecuperarSenha": {
+            "post": {
+                "summary": "Recupera a senha do usuário",
+                "tags": ["Users"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RecuperarSenha"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Solicitação de recuperação de senha enviada"
+                    }
+                }
+            }
+        },
+        "/v1/accounts/Users/MudarSenha": {
+            "post": {
+                "summary": "Muda a senha do usuário",
+                "tags": ["Users"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MudarSenha"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Senha alterada com sucesso"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/Docs/{id}": {
+            "get": {
+                "summary": "Obtém a foto de perfil do usuário",
+                "tags": ["Docs"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Foto de perfil retornada com sucesso"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Atualiza a foto de perfil do usuário",
+                "tags": ["Docs"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "Docs": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Foto de perfil atualizada com sucesso"
+                    }
+                }
+            }
+        },
+        "/v1/accounts/token/": {
+            "post": {
+                "summary": "Cria um novo token",
+                "tags": ["v1", "Token"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TokenRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Token criado com sucesso"
+                    }
+                }
+            }
+        },
+        "/v1/Events": {
+            "get": {
+                "summary": "Lista todos os eventos",
+                "tags": ["Events"],
+                "responses": {
+                    "200": {
+                        "description": "Uma lista de todos os eventos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Event"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "summary": "Cria um novo evento",
+                "tags": ["Events"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/NewEvent"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Evento criado com sucesso"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/v1/Events/{id}": {
+            "get": {
+                "summary": "Obtém os detalhes de um evento",
+                "tags": ["Events"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalhes do evento retornados com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Event"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "summary": "Atualiza um evento existente",
+                "tags": ["Events"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateEvent"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Evento atualizado com sucesso"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "summary": "Apaga um evento",
+                "tags": ["Events"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Evento apagado com sucesso"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "User": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "example": "123"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "john.doe@example.com"
+                    }
+                }
+            },
+            "NewUser": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "john.doe@example.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "password123"
+                    },
+
+                    "number":{
+                        "type": "string",
+                        "example": "(83) 9 1239-1233"
+                    },
+                    "birthDate":{
+                        "type": "string",
+                        "example": "2024-06-09"
+                    },
+                    "cpf":{
+                        "type": "string",
+                        "example": "john.doe@example.com"
+                    }
+                },
+                "required": ["name", "email", "password"]
+            },
+            "UpdateUser": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "john.doe@example.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "password123"
+                    },
+
+                    "number":{
+                        "type": "string",
+                        "example": "(83) 9 1239-1233"
+                    },
+                    "birthDate":{
+                        "type": "string",
+                        "example": "2024-06-09"
+                    },
+                    "cpf":{
+                        "type": "string",
+                        "example": "john.doe@example.com"
+                    }
+                },
+                "required": ["name", "email"]
+            },
+            "RecuperarSenha": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "example": "john.doe@example.com"
+                    }
+                },
+                "required": ["email"]
+            },
+            "MudarSenha": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "example": "john.doe@example.com"
+                    },
+                    "oldPassword": {
+                        "type": "string",
+                        "example": "oldpassword123"
+                    },
+                    "newPassword": {
+                        "type": "string",
+                        "example": "newpassword123"
+                    }
+                },
+                "required": ["email", "oldPassword", "newPassword"]
+            },
+            "TokenRequest": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "example": "john.doe@example.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "password123"
+                    }
+                },
+                "required": ["email", "password"]
+            },
+            "Event": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "example": "1"
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "Evento Inovatec"
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2024-07-01"
+                    },
+                    "start": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "null"
+                    },
+                    "end": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "null"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Descrição do evento Inovatec"
+                    }
+                }
+            },
+            "NewEvent": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "example": "Evento Inovatec"
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2024-07-01"
+                    },
+                    "ou": {
+                        "type": "string",
+                        "format": "string",
+                        "example": "se for mais de um dia usar start e end"
+                    },
+                    "start": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2024-07-01"
+                    },
+                    "end": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2024-07-01"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Descrição do evento Inovatec"
+                    }
+                },
+                "required": ["title", "date", "description"]
+            },
+            "UpdateEvent": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "example": "Evento Inovatec"
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2024-07-01"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Descrição do evento Inovatec"
+                    }
+                },
+                "required": ["title", "date", "description"]
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}
