@@ -5,11 +5,6 @@ const Grant = require("../apps/Autenticacao/models/grant");
 const Profile = require("../apps/Autenticacao/models/profile");
 const ProfileGrant = require("../apps/Autenticacao/models/profileGrant");
 
-
-
-
-
-
 const Op = Sequelize.Op;
 
 /** Associations */
@@ -20,9 +15,6 @@ ProfileGrant.belongsTo(Profile);
 ProfileGrant.belongsTo(Grant);
 
 User.belongsTo(Profile, { as: "profilesId", foreignKey: "profiles_id" });
-
-
-
 
 const db = {};
 
@@ -38,7 +30,7 @@ const isDate = (str) => {
 };
 
 function renameKeys(obj, newKeys) {
-  const keyValues = Object.keys(obj).map(key => {
+  const keyValues = Object.keys(obj).map((key) => {
     const newKey = newKeys[key] || key;
     return { [newKey]: obj[key] };
   });
@@ -72,8 +64,6 @@ const paginate = (req, options = {}) => {
   //console.log(req.userInfo.profile);
   //console.log(req.userInfo.path);
 
-
-  
   if (reqFilters && reqFilters.length > 0) {
     let filters = reqFilters;
     if (filters.startsWith("[[")) {
@@ -106,25 +96,19 @@ const paginate = (req, options = {}) => {
           }
           filterStr[filterTokens[0]] = { [Op.in]: values };
         } else if (["date", "number"].indexOf(filterTokens[1]) !== -1) {
-          filterStr[filterTokens[0]] = 
-            sequelize.where(
-              sequelize.cast(sequelize.col(filterTokens[0]), 'varchar'),
-              {[Op.iLike]: `%${filterTokens[2].replace('T', ' ')}%`}
-            )
+          filterStr[filterTokens[0]] = sequelize.where(
+            sequelize.cast(sequelize.col(filterTokens[0]), "varchar"),
+            { [Op.iLike]: `%${filterTokens[2].replace("T", " ")}%` }
+          );
         } else {
           filterStr[filterTokens[0]] = { [Op.iLike]: `%${filterTokens[2]}%` };
 
           // let strField = filterTokens[0].replace(/[$]/g, '')
-          // cast.push(sequelize.where(sequelize.cast(sequelize.col(strField), 'varchar'),{[Op.iLike]: `%${filterTokens[2]}%`}));          
+          // cast.push(sequelize.where(sequelize.cast(sequelize.col(strField), 'varchar'),{[Op.iLike]: `%${filterTokens[2]}%`}));
         }
       }
     });
   }
-
-  
-
-
-    
 
   // result["where"] = cast;
 
@@ -134,15 +118,13 @@ const paginate = (req, options = {}) => {
   let orderStr = [];
 
   if (reqOrders) {
-    let Orders = reqOrders.replace('\[', '').replace('\]', '').split(',');
-    orderStr = (Orders.length > 0) ? Orders : [];
+    let Orders = reqOrders.replace("[", "").replace("]", "").split(",");
+    orderStr = Orders.length > 0 ? Orders : [];
   } else {
     orderStr = [];
   }
- 
 
   if (filterStr) {
-    
     if (result["where"]) {
       let resWhere = Object.assign({}, result["where"], filterStr);
       result["where"] = resWhere;
@@ -150,22 +132,22 @@ const paginate = (req, options = {}) => {
       result["where"] = filterStr;
     }
 
-    if (!(/true/i).test(hideModelAssotiations)) {
-      result["include"] = [{ all: true }]
+    if (!/true/i.test(hideModelAssotiations)) {
+      result["include"] = [{ all: true }];
     }
   }
 
-  if (orderStr.length > 0 && orderStr[0] !== '') {
+  if (orderStr.length > 0 && orderStr[0] !== "") {
     result["order"] = orderStr;
   } else if (options.order) {
-    result["order"] = options.order
+    result["order"] = options.order;
   } else {
     result["order"] = [["createdAt", "DESC"]];
   }
 
   return {
     ...result,
-    include: options.include ? options.include : result.include
+    include: options.include ? options.include : result.include,
   };
 };
 
